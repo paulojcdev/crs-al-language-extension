@@ -131,18 +131,12 @@ export class Settings {
     }
 
     private static getLaunchSettings(ResourceUri: vscode.Uri, index: number) {
-        let currentLaunchConfig = this.launchconfig.configurations;
-
-         if (currentLaunchConfig.length = 0) {
-            this.launchconfig = ResourceUri ?
-                vscode.workspace.getConfiguration('launch', ResourceUri) :
-                vscode.window.activeTextEditor ?
-                    vscode.workspace.getConfiguration('launch', vscode.window.activeTextEditor.document.uri) :
-                    vscode.workspace.getConfiguration('launch', vscode.workspace.workspaceFolders[0].uri); 
-
-            currentLaunchConfig = this.launchconfig.configurations;
+        if (this.launchconfig.configurations.length == 0) {
+            this.launchconfig = this.getLaunchSettingsArray(ResourceUri);
         }; 
         
+        let currentLaunchConfig = this.launchconfig.configurations;
+
         this.SettingCollection[this.WebServer] = currentLaunchConfig[index].server;
         this.SettingCollection[this.WebServerInstance] = currentLaunchConfig[index].serverInstance;
         this.SettingCollection[this.Tenant] = currentLaunchConfig[index].tenant ? currentLaunchConfig[index].tenant : "default";
